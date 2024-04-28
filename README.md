@@ -1,5 +1,5 @@
 # CodeCount
-|   |   |
+| Tagline  |  Count Every Project, Every penny, Every possibility |
 | --- | ---|
 | author | [@allisonoge](https://github.com/allisonoge) |
 | version | 0.0.0 |

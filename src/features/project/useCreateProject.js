@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
+import toast from "react-hot-toast";
 import { createProject as createProjectApi } from "../../services/apiProjects";
 import { getCurrentUser } from "../../services/apiAuth";
-import toast from "react-hot-toast";
 
 export function useCreateProject() {
     const queryClient = useQueryClient();

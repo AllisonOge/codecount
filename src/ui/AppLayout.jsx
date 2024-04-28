@@ -10,8 +10,6 @@ export default function AppLayout() {
         <ul>
           <Link to="/dashboard">Dashboard</Link>
           <br />
-          <Link to="/projects">Projects</Link>
-          <br />
           <Link to="/earnings">Earnings</Link>
         </ul>
         <ul>

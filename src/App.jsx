@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 // import GlobalStyles from "./styles/GlobalStyles";
 import ProtectedRoute from "./ui/ProtectedRoute";
 import Dashboard from "./pages/Dashboard";
-import Projects from "./pages/Projects";
+import Project from "./pages/Project";
 import Earnings from "./pages/Earnings";
 import Profile from "./pages/Profile";
 import Login from "./pages/Login";
@@ -37,8 +37,8 @@ function App() {
               }
             >
               <Route index element={<Navigate replace to="dashboard" />} />
-              <Route path="dashboard" element={<Dashboard />} />
-              <Route path="projects" element={<Projects />} />
+              <Route path="dashboard" element={<Dashboard />}/>
+              <Route path="/dashboard/project/:id" element={<Project />} />
               <Route path="earnings" element={<Earnings />} />
               <Route path="profile" element={<Profile />} />
             </Route>

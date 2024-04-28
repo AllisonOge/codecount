@@ -1,7 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
 import { getProjects } from "../services/apiProjects";
 import { useState } from "react";
-import CreateProject from "../features/projects/CreateProject";
+import CreateProject from "../features/project/CreateProject";
 
 export default function Dashboard() {
   const [toggle, setToggle] = useState(false);
@@ -9,14 +10,20 @@ export default function Dashboard() {
     queryFn: getProjects,
     queryKey: ["projects"],
   });
+  const navigate = useNavigate();
 
   return (
     <>
       {!isLoading &&
         projects?.map((project) => (
-          <pre key={project.id}>{JSON.stringify(project)}</pre>
+          <pre
+            key={project.id}
+            onClick={() => navigate(`project/${project.id}`)}
+          >
+            {JSON.stringify(project)}
+          </pre>
         ))}
-      {!isLoading && projects?.length == 0 && !toggle && (
+      {(!isLoading && !toggle) && (
         <input
           type="button"
           value="Create a project"
