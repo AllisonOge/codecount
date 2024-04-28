@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useLogin } from "../features/auth/useLogin";
+import { useSignup } from  "../features/auth/useSignup";
 
 export default function Login() {
   const [toggle, setToggle] = useState(false);
@@ -8,21 +9,36 @@ export default function Login() {
     register,
     handleSubmit,
     reset,
+    getValues,
     formState: { errors },
   } = useForm();
-  const { login, isLoading } = useLogin();
+
+  const { login, isLoading: isLogging } = useLogin();
+  const { signup, isLoading: isCreating } = useSignup();
+
+  const isLoading = isLogging || isCreating;
 
   const onSubmit = (d) => {
     console.log(d);
     const { email, password } = d;
-    login(
-      { email, password },
-      {
-        onSettled: () => {
-          reset();
-        },
-      }
-    );
+    if (!toggle)
+      login(
+        { email, password },
+        {
+          onSettled: () => {
+            reset();
+          },
+        }
+      );
+    else
+      signup(
+        { email, password },
+        {
+          onSettled: () => {
+            reset();
+          },
+        }
+      );
   };
   return (
     <>
@@ -63,6 +79,22 @@ export default function Login() {
             disabled={isLoading}
           />
         </div>
+        {toggle && (
+          <div>
+            <label htmlFor="confirmPassword">Confirm Password</label>
+            <input
+              name="confirmPassword"
+              id="confirmPassword"
+              type="password"
+              {...register("confirmPassword", {
+                required: "This field is required",
+                validate: (value) =>
+                  value == getValues().password || "Password does not match",
+              })}
+              disabled={isLoading}
+            />
+          </div>
+        )}
         {/* <pre>{form}</pre> */}
         <br />
         <input type="submit" value="submit" disabled={isLoading} />
