@@ -54,3 +54,13 @@ export async function createProject({ title, owner, description = null, status =
 
     return data;
 }
+
+export async function deleteProject(id) {
+
+    const { error } = await supabase
+        .from('projects')
+        .delete()
+        .eq('id', id)
+
+    if (error) throw new Error(error.message)
+}

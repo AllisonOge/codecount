@@ -1,5 +1,5 @@
 import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
@@ -7,9 +7,11 @@ import { useUpdateProject } from "../features/project/useUpdateProject";
 import { getUserStories } from "../services/apiUserStories";
 import { getProject } from "../services/apiProjects";
 import UserStory from "../features/userstory/UserStory";
+import { useDeleteProject } from "../features/project/useDeleteProject";
 
 export default function Project() {
   const { id } = useParams();
+  const queryClient = useQueryClient();
   const { data: projectDetails, isLoading: isLoadingProject } = useQuery({
     queryKey: ["project", id],
     queryFn: async () => {
@@ -43,23 +45,57 @@ export default function Project() {
     setDefaultValues();
   }, [projectDetails, isLoadingProject, setValue]);
 
-  const queryClient = useQueryClient();
-
-  const [edit, setEdit] = useState(false);
-
-  const { data: userStories, isLoadingUserStories } = useQuery({
+  const { data: userStories, isLoading: isLoadingUserStories } = useQuery({
     queryKey: ["userStories", id],
     queryFn: () => getUserStories(id),
   });
+
+  const [edit, setEdit] = useState(false);
+  const [storyPoints, setStoryPoints] = useState(0);
+
+  // TODO: read weights from settings table in database
+  const { data: weights, isLoadingWeights } = useQuery({
+    queryKey: ["weights"],
+    queryFn: () => ({
+      EASY: 1,
+      MEDIUM: 2,
+      HARD: 3,
+    }),
+  });
+
+  useEffect(() => {
+    if (!(isLoadingUserStories || isLoadingWeights)) {
+      const usMap = userStories
+        .filter((us) => us.id)
+        .map((us) => ({
+          id: us.id,
+          effortEstimate: us.effortEstimate,
+        }));
+      if (Object.keys(weights).length === 0 && weights.constructor === Object)
+        return;
+      const total = usMap.reduce((p, c) => p + weights[c.effortEstimate], 0);
+      setStoryPoints(total);
+    }
+  }, [
+    userStories,
+    weights,
+    setStoryPoints,
+    isLoadingUserStories,
+    isLoadingWeights,
+  ]);
+
   const { updateProject, isUpdating } = useUpdateProject(id);
+
+  const {deleteProject, isDeleting} = useDeleteProject(id)
 
   const { mutate, isLoading: isAdding } = useMutation({
     mutationFn: handleClick,
   });
 
-  
+  const navigate = useNavigate()
+
   const isLoading = isLoadingProject || isLoadingUserStories;
-  const isWorking = isUpdating || isAdding;
+  const isWorking = isUpdating || isAdding || isDeleting;
 
   // if data is empty prepopulate the table with empty rows
   if (userStories?.length === 0)
@@ -98,6 +134,12 @@ export default function Project() {
       status: "",
       assigned: "",
     });
+  }
+
+  function handleDelete() {
+    deleteProject(id, {
+      onSuccess: () => navigate("/dashboard")
+    })
   }
 
   return (
@@ -141,6 +183,16 @@ export default function Project() {
               <option value="done">DONE</option>
             </select>
           </div>
+          <div>
+            <label htmlFor="storyPoints">Story Points</label>
+            <input
+              type="button"
+              value={storyPoints}
+              name="storyPoints"
+              id="storyPoints"
+              readOnly={true}
+            />
+          </div>
           <input
             type="button"
             value={!edit ? "Edit" : "Save"}
@@ -153,6 +205,13 @@ export default function Project() {
               value="Cancel"
               onClick={() => setEdit((state) => !state)}
               disabled={isUpdating}
+            />
+          )}
+          {!edit && (
+            <input
+              type="button"
+              value="Delete"
+              onClick={handleSubmit(handleDelete)}
             />
           )}
         </form>
@@ -174,7 +233,11 @@ export default function Project() {
             <UserStory key={idx} userStory={userStory} id={id} />
           ))}
           <div>
-            <input type="button" value="Add user story" onClick={() => mutate()} />
+            <input
+              type="button"
+              value="Add user story"
+              onClick={() => mutate()}
+            />
           </div>
         </tbody>
       </table>
