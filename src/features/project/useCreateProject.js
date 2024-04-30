@@ -7,7 +7,7 @@ export function useCreateProject() {
     const queryClient = useQueryClient();
     const { mutate: createProject, isLoading: isCreating } = useMutation({
         mutationFn: async (d) => {
-            const user = queryClient.getQueryData("user") || await getCurrentUser();
+            const user = queryClient.getQueryData(["user"]) || await getCurrentUser();
             if (!user) {
                 throw new Error("User is not logged in");
             }
