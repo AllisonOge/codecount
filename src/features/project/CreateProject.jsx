@@ -12,7 +12,6 @@ export default function CreateProject({ cancelProject }) {
   const { createProject, isCreating } = useCreateProject();
 
   function onSubmit(d) {
-    console.log(d);
     createProject(d, {
       onSettled: () => {
         reset();

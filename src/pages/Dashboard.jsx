@@ -1,7 +1,7 @@
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useNavigate } from "react-router-dom";
-import { getProjects } from "../services/apiProjects";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { getProjects } from "../services/apiProjects";
 import CreateProject from "../features/project/CreateProject";
 import { getCurrentUser } from "../services/apiAuth";
 

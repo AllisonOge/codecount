@@ -8,6 +8,7 @@ import { getUserStories } from "../services/apiUserStories";
 import { getProject } from "../services/apiProjects";
 import UserStory from "../features/userstory/UserStory";
 import { useDeleteProject } from "../features/project/useDeleteProject";
+import BurnDownChart from "../features/project/BurnDownChart";
 
 export default function Project() {
   const { id } = useParams();
@@ -66,7 +67,7 @@ export default function Project() {
   useEffect(() => {
     if (!(isLoadingUserStories || isLoadingWeights)) {
       const usMap = userStories
-        .filter((us) => us.id)
+        .filter((us) => us.id && us.effortEstimate)
         .map((us) => ({
           id: us.id,
           effortEstimate: us.effortEstimate,
@@ -241,6 +242,7 @@ export default function Project() {
           </div>
         </tbody>
       </table>
+      <BurnDownChart />
     </>
   );
 }
