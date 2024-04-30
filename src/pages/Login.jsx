@@ -19,7 +19,6 @@ export default function Login() {
   const isLoading = isLogging || isCreating;
 
   const onSubmit = (d) => {
-    console.log(d);
     const { email, password } = d;
     if (!toggle)
       login(
