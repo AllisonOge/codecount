@@ -1,13 +1,20 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createUpdateUserStory as createUpdateUserStoryApi } from "../../services/apiUserStories";
+import { catalogCompletedUserStory, createUpdateUserStory as createUpdateUserStoryApi } from "../../services/apiUserStories";
 import toast from "react-hot-toast";
 
-export function useCreateUpdateUserStory(id) {
+export function useCreateUpdateUserStory(projectId) {
     const queryClient = useQueryClient()
     const { mutate: createUpdateUserStory, isLoading: isCreatingUpdating } = useMutation({
-        mutationFn: createUpdateUserStoryApi,
+        mutationFn: async ({ data, id }) => {
+            // catalog completed user stories
+            if (data?.status == "done" && id) {
+                const userStoryId = id
+                catalogCompletedUserStory({ projectId, userStoryId })
+            }
+            return await createUpdateUserStoryApi({ data, id })
+        },
         onSuccess: () => {
-            queryClient.invalidateQueries(["userStories", id])
+            queryClient.invalidateQueries(["userStories", projectId])
         },
         onError: (err) => {
             toast.error(err.message)

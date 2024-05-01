@@ -4,27 +4,16 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { useUpdateProject } from "../features/project/useUpdateProject";
-import { getUserStories } from "../services/apiUserStories";
-import { getProject } from "../services/apiProjects";
+import { useProjectDetails } from "../features/project/useProjectDetails";
 import UserStory from "../features/userstory/UserStory";
 import { useDeleteProject } from "../features/project/useDeleteProject";
 import BurnDownChart from "../features/project/BurnDownChart";
+import { useUserStories } from "../features/userstory/useUserStories";
 
 export default function Project() {
   const { id } = useParams();
-  const queryClient = useQueryClient();
-  const { data: projectDetails, isLoading: isLoadingProject } = useQuery({
-    queryKey: ["project", id],
-    queryFn: async () => {
-      let project = queryClient
-        .getQueryData(["projects"])
-        ?.find((project) => project.id === id);
-      if (!project) {
-        project = await getProject(id);
-      }
-      return project;
-    },
-  });
+
+  const { projectDetails, isLoadingProject } = useProjectDetails(id);
   const {
     register,
     handleSubmit,
@@ -46,21 +35,18 @@ export default function Project() {
     setDefaultValues();
   }, [projectDetails, isLoadingProject, setValue]);
 
-  const { data: userStories, isLoading: isLoadingUserStories } = useQuery({
-    queryKey: ["userStories", id],
-    queryFn: () => getUserStories(id),
-  });
+  const { userStories, isLoadingUserStories } = useUserStories(id);
 
   const [edit, setEdit] = useState(false);
   const [storyPoints, setStoryPoints] = useState(0);
 
   // TODO: read weights from settings table in database
-  const { data: weights, isLoadingWeights } = useQuery({
+  const { data: weights, isLoading: isLoadingWeights } = useQuery({
     queryKey: ["weights"],
     queryFn: () => ({
-      EASY: 1,
-      MEDIUM: 2,
-      HARD: 3,
+      easy: 1,
+      medium: 2,
+      hard: 3,
     }),
   });
 
@@ -70,7 +56,7 @@ export default function Project() {
         .filter((us) => us.id && us.effortEstimate)
         .map((us) => ({
           id: us.id,
-          effortEstimate: us.effortEstimate,
+          effortEstimate: us.effortEstimate.toLowerCase(),
         }));
       if (Object.keys(weights).length === 0 && weights.constructor === Object)
         return;
@@ -87,13 +73,13 @@ export default function Project() {
 
   const { updateProject, isUpdating } = useUpdateProject(id);
 
-  const {deleteProject, isDeleting} = useDeleteProject(id)
+  const { deleteProject, isDeleting } = useDeleteProject(id);
 
   const { mutate, isLoading: isAdding } = useMutation({
     mutationFn: handleClick,
   });
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const isLoading = isLoadingProject || isLoadingUserStories;
   const isWorking = isUpdating || isAdding || isDeleting;
@@ -139,8 +125,8 @@ export default function Project() {
 
   function handleDelete() {
     deleteProject(id, {
-      onSuccess: () => navigate("/dashboard")
-    })
+      onSuccess: () => navigate("/dashboard"),
+    });
   }
 
   return (
@@ -242,7 +228,12 @@ export default function Project() {
           </div>
         </tbody>
       </table>
-      <BurnDownChart />
+      <br/>
+      {storyPoints > 0 ? (
+        <BurnDownChart />
+      ) : (
+        "Add user stories to generate burndown chart"
+      )}
     </>
   );
 }
