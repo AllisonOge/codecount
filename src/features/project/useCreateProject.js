@@ -11,7 +11,7 @@ export function useCreateProject() {
             if (!user) {
                 throw new Error("User is not logged in");
             }
-            console.log(user)
+            // console.log(user)
             await createProjectApi({ ...d, owner: user.id })
         },
         onSuccess: () => {
@@ -21,7 +21,7 @@ export function useCreateProject() {
             })
         },
         onError: (err) => {
-            console.log(err)
+            // console.log(err)
             toast.error(err.message)
         }
 

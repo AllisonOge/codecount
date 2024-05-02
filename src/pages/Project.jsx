@@ -1,13 +1,14 @@
-import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
+import BurnDownChart from "../features/project/BurnDownChart";
+import UserStory from "../features/userstory/UserStory";
+import PieChart from "../features/project/PieChart";
 import { useUpdateProject } from "../features/project/useUpdateProject";
 import { useProjectDetails } from "../features/project/useProjectDetails";
-import UserStory from "../features/userstory/UserStory";
 import { useDeleteProject } from "../features/project/useDeleteProject";
-import BurnDownChart from "../features/project/BurnDownChart";
 import { useUserStories } from "../features/userstory/useUserStories";
 
 export default function Project() {
@@ -203,6 +204,8 @@ export default function Project() {
           )}
         </form>
       </div>
+      <br/>
+      <PieChart/>
       <br />
       <table>
         <thead>

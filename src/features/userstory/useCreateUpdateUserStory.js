@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { catalogCompletedUserStory, createUpdateUserStory as createUpdateUserStoryApi } from "../../services/apiUserStories";
+import { createUpdateUserStory as createUpdateUserStoryApi } from "../../services/apiUserStories";
+import { catalogCompletedUserStory } from '../../services/apiBurnDown';
 import toast from "react-hot-toast";
 
 export function useCreateUpdateUserStory(projectId) {

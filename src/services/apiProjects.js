@@ -27,7 +27,7 @@ export async function getProject(id) {
 
 export async function updateProject({ data, id }) {
     const { title, description, status } = data
-    console.log(data, id)
+    // console.log(data, id)
     const { error } = await supabase
         .from('projects')
         .update({
@@ -41,7 +41,7 @@ export async function updateProject({ data, id }) {
 }
 
 export async function createProject({ title, owner, description = null, status = "in progress" }) {
-    console.log({ title, owner, description, status })
+    // console.log({ title, owner, description, status })
 
     const { data, error } = await supabase
         .from('projects')

@@ -1,8 +1,15 @@
 import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
+import {
+  addDays,
+  differenceInDays,
+  endOfDay,
+  formatDate,
+  startOfDay,
+} from "date-fns";
 import { useUserStories } from "../userstory/useUserStories";
-import { addDays, differenceInDays, formatDate } from "date-fns";
+import { getWorkdonePerDay } from "../../services/apiBurnDown";
 
 function cumulativeSum(storyPointsPerDay) {
   let storyPointsAcc = [];
@@ -69,78 +76,7 @@ export default function BurnDownChart() {
     {
       queryKey: ["workdonePerDay"],
       // TODO: replace with data from database
-      queryFn: () => [
-        {
-          day: new Date(2024, 3, 1).toISOString(),
-          userStories: [
-            {
-              id: 1,
-              effortEstimate: "easy",
-            },
-            {
-              id: 4,
-              effortEstimate: "easy",
-            },
-          ],
-          count: 2,
-        },
-        {
-          day: new Date(2024, 3, 2).toISOString(),
-          userStories: [
-            {
-              id: 3,
-              effortEstimate: "medium",
-            },
-            {
-              id: 8,
-              effortEstimate: "easy",
-            },
-          ],
-          count: 2,
-        },
-        {
-          day: new Date(2024, 3, 3).toISOString(),
-          userStories: [
-            {
-              id: 5,
-              effortEstimate: "medium",
-            },
-            {
-              id: 9,
-              effortEstimate: "easy",
-            },
-            {
-              id: 10,
-              effortEstimate: "easy",
-            },
-          ],
-          count: 3,
-        },
-        {
-          day: new Date(2024, 3, 4).toISOString(),
-          userStories: [
-            {
-              id: 6,
-              effortEstimate: "hard",
-            },
-          ],
-          count: 1,
-        },
-        {
-          day: new Date(2024, 3, 5).toISOString(),
-          userStories: [
-            {
-              id: 7,
-              effortEstimate: "medium",
-            },
-            {
-              id: 11,
-              effortEstimate: "easy",
-            },
-          ],
-          count: 2,
-        },
-      ],
+      queryFn: () => getWorkdonePerDay(id),
     }
   );
 
@@ -172,12 +108,13 @@ export default function BurnDownChart() {
         (acc, cur) => (acc === null || cur.endDate > acc ? cur.endDate : acc),
         null
       );
-      console.log(
-        `Project ranges from ${projectStartDateISO} to ${projectEndDateISO}`
-      );
-      const projectStartDate = new Date(projectStartDateISO);
-      const projectEndDate = new Date(projectEndDateISO);
-      const numberOfDays = differenceInDays(projectEndDate, projectStartDate);
+      // console.log(
+      //   `Project ranges from ${projectStartDateISO} to ${projectEndDateISO}`
+      // );
+      const projectStartDate = startOfDay(projectStartDateISO);
+      const projectEndDate = endOfDay(projectEndDateISO);
+      const numberOfDays =
+        differenceInDays(projectEndDate, projectStartDate) + 1;
       const expectedStoryPointsPerDay = distributeEvenly(
         total,
         numberOfDays
@@ -185,24 +122,24 @@ export default function BurnDownChart() {
         day: addDays(projectStartDate, idx).toISOString(),
         storyPoints: sp,
       }));
-      console.log("Number of days ->", numberOfDays);
-      console.log("Workdone per day ->", workdonePerDay);
+      // console.log("Number of days ->", numberOfDays);
+      // console.log("Workdone per day ->", workdonePerDay);
       const storyPointsPerDay = workdonePerDay.map((w) => ({
         day: w.day,
         storyPoints: w.userStories.reduce(
-          (acc, cur) => acc + weights[cur.effortEstimate],
+          (acc, cur) => acc + weights[cur.effortEstimate.toLowerCase()],
           0
         ),
       }));
-      console.log(
-        "Expected story points per day ->",
-        expectedStoryPointsPerDay
-      );
-      console.log("Actual story points per day ->", storyPointsPerDay);
+      // console.log(
+      //   "Expected story points per day ->",
+      //   expectedStoryPointsPerDay
+      // );
+      // console.log("Actual story points per day ->", storyPointsPerDay);
       const expectedPointsAcc = cumulativeSum(expectedStoryPointsPerDay);
       const storyPointsAcc = cumulativeSum(storyPointsPerDay);
-      console.log("Expected story points accumulated ->", expectedPointsAcc);
-      console.log("Actual story points accumulated ->", storyPointsAcc);
+      // console.log("Expected story points accumulated ->", expectedPointsAcc);
+      // console.log("Actual story points accumulated ->", storyPointsAcc);
       setExpectedStoryPointsPerDay(expectedPointsAcc);
       setStoryPointsPerDay(storyPointsAcc);
     }
@@ -238,9 +175,12 @@ export default function BurnDownChart() {
                 <td>{`(${formatDate(expectedCoord.day, "dd MMMM")}, ${
                   storyPoints - expectedCoord.storyPoints
                 })`}</td>
-                <td>{actualCoord && `(${formatDate(actualCoord.day, "dd MMMM")}, ${
-                  storyPoints - actualCoord.storyPoints
-                })`}</td>
+                <td>
+                  {actualCoord &&
+                    `(${formatDate(actualCoord.day, "dd MMMM")}, ${
+                      storyPoints - actualCoord.storyPoints
+                    })`}
+                </td>
               </tr>
             ))}
           </tbody>
