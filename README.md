@@ -13,6 +13,8 @@ There are 4 major features fully defined in the following trello board => [https
 
 ## Screenshots
 
+Dashboard view (without UI styling)
+![codecount dashboard](src/assets/screencapture-localhost-5173-dashboard-project-14-2024-05-01-23_01_25.png)
 
 ## Getting started
 
