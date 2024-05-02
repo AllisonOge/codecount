@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useLogin } from "../features/auth/useLogin";
-import { useSignup } from  "../features/auth/useSignup";
+import { useSignup } from "../features/auth/useSignup";
+import { Form, Row, Button } from "react-bootstrap";
+import Error from "../ui/Error";
 
 export default function Login() {
   const [toggle, setToggle] = useState(false);
@@ -40,50 +42,50 @@ export default function Login() {
       );
   };
   return (
-    <>
-      <div>
-        <input
+    <Row style={{ width: "30rem", margin: "2rem auto" }}>
+      <div className="d-grid gap-2">
+        <Button
+          as="input"
           type="button"
           value={(toggle ? "Signup" : "Continue") + " with Google"}
         />
-        <br />
-        <input
+        <Button
+          as="input"
           type="button"
+          variant="secondary"
           value={(toggle ? "Signup" : "Continue") + " with Github"}
         />
       </div>
-      <br />
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div>
-          <label htmlFor="email">Email</label>
-          <input
+      <Form onSubmit={handleSubmit(onSubmit)}>
+        <Form.Group controlId="email">
+          <Form.Label>Email</Form.Label>
+          <Form.Control
             name="email"
-            id="email"
             type="email"
             {...register("email", {
               required: "This field is required",
             })}
             disabled={isLoading}
           />
-        </div>
-        <div>
-          <label htmlFor="password">Password</label>
-          <input
+          {errors?.email && <Error>{errors?.email?.message}</Error>}
+        </Form.Group>
+        <Form.Group controlId="password">
+          <Form.Label>Password</Form.Label>
+          <Form.Control
             name="password"
-            id="password"
             type="password"
             {...register("password", {
               required: "This field is required",
             })}
             disabled={isLoading}
           />
-        </div>
+          {errors?.password && <Error>{errors?.password?.message}</Error>}
+        </Form.Group>
         {toggle && (
-          <div>
-            <label htmlFor="confirmPassword">Confirm Password</label>
-            <input
+          <Form.Group controlId="confirmPassword">
+            <Form.Label>Confirm Password</Form.Label>
+            <Form.Control
               name="confirmPassword"
-              id="confirmPassword"
               type="password"
               {...register("confirmPassword", {
                 required: "This field is required",
@@ -92,16 +94,17 @@ export default function Login() {
               })}
               disabled={isLoading}
             />
-          </div>
+            {errors?.confirmPassword && <Error>{errors?.confirmPassword?.message}</Error>}
+          </Form.Group>
         )}
-        {/* <pre>{form}</pre> */}
         <br />
-        <input type="submit" value="submit" disabled={isLoading} />
-      </form>
+        <Button as="input" type="submit" value="submit" disabled={isLoading} />
+      </Form>
       {!toggle && (
         <p>
           Not a registered user?{" "}
-          <input
+          <Button
+            as="input"
             type="button"
             value="Signup"
             onClick={() => {
@@ -122,6 +125,6 @@ export default function Login() {
           />{" "}
         </p>
       )}
-    </>
+    </Row>
   );
 }

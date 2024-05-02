@@ -10,6 +10,14 @@ import {
 } from "date-fns";
 import { useUserStories } from "../userstory/useUserStories";
 import { getWorkdonePerDay } from "../../services/apiBurnDown";
+import {
+  Area,
+  AreaChart,
+  Tooltip,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+} from "recharts";
 
 function cumulativeSum(storyPointsPerDay) {
   let storyPointsAcc = [];
@@ -38,14 +46,6 @@ function distributeEvenly(storyPoints, numberOfDays) {
   return distributedPoints;
 }
 
-function zip(arrays) {
-  return arrays[0].map(function (_, i) {
-    return arrays.map(function (array) {
-      return array[i];
-    });
-  });
-}
-
 /*********************************************************
  * BurndownChart component reads the burndown_chart table
  * which is a catalog of workdone (completed tasks) in a day
@@ -54,10 +54,6 @@ function zip(arrays) {
 
 export default function BurnDownChart() {
   const { id } = useParams();
-  const [storyPoints, setStoryPoints] = useState(0);
-  const [expectedStoryPointsPerDay, setExpectedStoryPointsPerDay] = useState(
-    []
-  );
   const [storyPointsPerDay, setStoryPointsPerDay] = useState([]);
 
   const { userStories, isLoadingUserStories } = useUserStories(id);
@@ -93,7 +89,6 @@ export default function BurnDownChart() {
       if (Object.keys(weights).length === 0 && weights.constructor === Object)
         return;
       const total = usMap.reduce((p, c) => p + weights[c.effortEstimate], 0);
-      setStoryPoints(total);
 
       /* I need the following data =>
        * 1.) start and end date of the project,
@@ -140,52 +135,62 @@ export default function BurnDownChart() {
       const storyPointsAcc = cumulativeSum(storyPointsPerDay);
       // console.log("Expected story points accumulated ->", expectedPointsAcc);
       // console.log("Actual story points accumulated ->", storyPointsAcc);
-      setExpectedStoryPointsPerDay(expectedPointsAcc);
-      setStoryPointsPerDay(storyPointsAcc);
+      const burndownPoints = storyPointsAcc.map((sp) => ({
+        ...sp,
+        storyPoints: total - sp.storyPoints,
+        day: formatDate(sp.day, "dd MMMM"),
+      }));
+      const mergedBurndownPoints = expectedPointsAcc
+        .map((sp) => ({
+          ...sp,
+          storyPoints: total - sp.storyPoints,
+          day: formatDate(sp.day, "dd MMMM"),
+        }))
+        .map((sp, idx) => ({
+          day: sp.day,
+          expectedStoryPoints: sp.storyPoints,
+          actualStoryPoints:
+            idx < burndownPoints.length ? burndownPoints[idx].storyPoints : 0,
+        }));
+
+      setStoryPointsPerDay(mergedBurndownPoints);
     }
   }, [
     userStories,
     weights,
-    setStoryPoints,
     workdonePerDay,
     setStoryPointsPerDay,
-    setExpectedStoryPointsPerDay,
     isLoadingUserStories,
     isLoadingWeights,
     isLoadingWorkdonePerDay,
   ]);
 
-  const zippedCoordinates = zip([expectedStoryPointsPerDay, storyPointsPerDay]);
-
   return (
     <>
-      <h3>Burndown Chart</h3>
-      <div>
-        {/*show cordinates that would be replaced by a chart library */}
-        <table>
-          <thead>
-            <tr>
-              <th>Expected</th>
-              <th>Actual</th>
-            </tr>
-          </thead>
-          <tbody>
-            {zippedCoordinates.map(([expectedCoord, actualCoord]) => (
-              <tr key={expectedCoord.day}>
-                <td>{`(${formatDate(expectedCoord.day, "dd MMMM")}, ${
-                  storyPoints - expectedCoord.storyPoints
-                })`}</td>
-                <td>
-                  {actualCoord &&
-                    `(${formatDate(actualCoord.day, "dd MMMM")}, ${
-                      storyPoints - actualCoord.storyPoints
-                    })`}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+      <h4>Burndown Chart</h4>
+      {/*show cordinates that would be replaced by a chart library */}
+      <AreaChart width={500} height={300} data={storyPointsPerDay}>
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis dataKey="day" />
+        <YAxis />
+        <Tooltip />
+        <Area
+          type="monotone"
+          dataKey="expectedStoryPoints"
+          stroke="#c1bcbc"
+          fill="#999595"
+          name="Expected Burndown"
+          unit="story points"
+        />
+        <Area
+          type="monotone"
+          dataKey="actualStoryPoints"
+          stroke="#ccc"
+          fill="#ddd"
+          name="Actual Burndown"
+          unit="story points"
+        />
+      </AreaChart>
     </>
   );
 }

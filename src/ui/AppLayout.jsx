@@ -1,27 +1,36 @@
 import { Outlet } from "react-router-dom";
 import { Link } from "react-router-dom/dist";
 import Logout from "../features/auth/Logout";
+import { Nav, NavDropdown, Navbar, Container } from "react-bootstrap";
 
 export default function AppLayout() {
   return (
     <>
-      <nav>
-        <p>CodeCount</p>
-        <ul>
-          <Link to="/dashboard">Dashboard</Link>
-          <br />
-          <Link to="/earnings">Earnings</Link>
-        </ul>
-        <ul>
-          <Link>Welcome</Link>
-          <ul>
-            <Link to="/profile">Profile</Link>
-            <br />
-            <Logout />
-          </ul>
-        </ul>
-      </nav>
-      <Outlet />
+      <Navbar expand="sm" className="bg-body-tertiary">
+        <Container>
+          <Navbar.Brand>CodeCount</Navbar.Brand>
+          <Navbar.Toggle aria-controls="navbar-nav" />
+          <Navbar.Collapse id="navbar-nav">
+            <Nav className="me-auto">
+              <Nav.Link as={Link} to="/dashboard">
+                Dashboard
+              </Nav.Link>
+              <Nav.Link as={Link} to="/earnings">
+                Earnings
+              </Nav.Link>
+              <NavDropdown title="Welcome" id="nav-dropdown">
+                <NavDropdown.Item as={Link} to="/profile">
+                  Profile
+                </NavDropdown.Item>
+                <NavDropdown.Item as={Logout} />
+              </NavDropdown>
+            </Nav>
+          </Navbar.Collapse>
+        </Container>
+      </Navbar>
+      <Container>
+        <Outlet />
+      </Container>
     </>
   );
 }

@@ -11,10 +11,20 @@
 
 There are 4 major features fully defined in the following trello board => [https://trello.com/b/whcmiUTd/codecount-project](https://trello.com/b/whcmiUTd/codecount-project)
 
-## Screenshots
+## Screenshots (MVP Solution)
 
-Dashboard view (without UI styling)
-![codecount dashboard](src/assets/screencapture-localhost-5173-dashboard-project-14-2024-05-01-23_01_25.png)
+Auth page
+![codecount auth](src/assets/screencapture-localhost-5173-login-2024-05-02-11_49_56.png)
+
+
+Dashboard view (Projects)
+![codecount projects](src/assets/screencapture-localhost-5173-dashboard-2024-05-02-11_23_03.png)
+
+Dashboard view (with charts - new project)
+![codecount dashboard](src/assets/screencapture-localhost-5173-dashboard-project-20-2024-05-02-11_45_00.png)
+
+Dashboard view (with charts)
+![codecount dashboard](src/assets/screencapture-localhost-5173-dashboard-project-14-2024-05-02-11_22_13.png)
 
 ## Getting started
 

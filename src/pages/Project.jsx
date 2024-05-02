@@ -5,11 +5,12 @@ import { useForm } from "react-hook-form";
 
 import BurnDownChart from "../features/project/BurnDownChart";
 import UserStory from "../features/userstory/UserStory";
-import PieChart from "../features/project/PieChart";
+import RadialChart from "../features/project/RadialChart";
 import { useUpdateProject } from "../features/project/useUpdateProject";
 import { useProjectDetails } from "../features/project/useProjectDetails";
 import { useDeleteProject } from "../features/project/useDeleteProject";
 import { useUserStories } from "../features/userstory/useUserStories";
+import { Form, Row, Col, Button } from "react-bootstrap";
 
 export default function Project() {
   const { id } = useParams();
@@ -132,111 +133,145 @@ export default function Project() {
 
   return (
     <>
-      <div>
-        <form>
-          <div>
-            <label htmlFor="title">Project Name</label>
-            <input
-              type="text"
-              name="title"
-              id="title"
-              {...register("title", {
-                required: "This field is required",
-              })}
-              disabled={!edit || isUpdating}
-            />
-            {errors?.title?.message}
-          </div>
-          <div>
-            <label htmlFor="description">Description</label>
-            <textarea
-              name="description"
-              id="description"
-              rows="4"
-              cols="50"
-              {...register("description")}
-              disabled={!edit || isUpdating}
-            ></textarea>
-          </div>
-          <div>
-            <label htmlFor="status">Status</label>
-            <select
-              type="text"
-              name="status"
-              id="status"
-              {...register("status")}
-              disabled={!edit || isUpdating}
-            >
-              <option value="in progress">IN PROGRESS</option>
-              <option value="done">DONE</option>
-            </select>
-          </div>
-          <div>
-            <label htmlFor="storyPoints">Story Points</label>
-            <input
-              type="button"
-              value={storyPoints}
-              name="storyPoints"
-              id="storyPoints"
-              readOnly={true}
-            />
-          </div>
-          <input
-            type="button"
-            value={!edit ? "Edit" : "Save"}
-            onClick={handleSubmit(onSubmit)}
-            disabled={isUpdating}
-          />
-          {edit && (
-            <input
-              type="button"
-              value="Cancel"
-              onClick={() => setEdit((state) => !state)}
-              disabled={isUpdating}
-            />
-          )}
-          {!edit && (
-            <input
-              type="button"
-              value="Delete"
-              onClick={handleSubmit(handleDelete)}
-            />
-          )}
-        </form>
-      </div>
-      <br/>
-      <PieChart/>
+      <style type="text/css">
+        {`
+.grid-table{
+  display: grid;
+  grid-template-columns: repeat(6, 1fr) 3rem;
+}
+
+.grid-table > div {
+  padding: 1rem 0.8rem;
+}
+  `}
+      </style>
       <br />
-      <table>
-        <thead>
-          <tr>
-            <th>User Stories</th>
-            <th>Effort Estimate</th>
-            <th>Start Date</th>
-            <th>End Date</th>
-            <th>Status</th>
-            <th>Assigned</th>
-          </tr>
-        </thead>
-        <tbody>
-          {userStories?.map((userStory, idx) => (
-            <UserStory key={idx} userStory={userStory} id={id} />
-          ))}
-          <div>
-            <input
+      <Row>
+        <Col xs={12} md={8}>
+          <Form>
+            <Form.Group controlId="title">
+              <Form.Label>Project Name</Form.Label>
+              <Form.Control
+                type="text"
+                name="title"
+                {...register("title", {
+                  required: "This field is required",
+                })}
+                disabled={!edit || isWorking}
+              />
+              {errors?.title?.message}
+            </Form.Group>
+            <Form.Group controlId="description">
+              <Form.Label>Description</Form.Label>
+              <Form.Control
+                as="textarea"
+                name="description"
+                rows={4}
+                cols={50}
+                {...register("description")}
+                disabled={!edit || isWorking}
+              />
+            </Form.Group>
+            <Row>
+              <Form.Group as={Col} xs={6} controlId="status">
+                <Form.Label>Status</Form.Label>
+                <Form.Select
+                  aria-label="select status"
+                  type="text"
+                  name="status"
+                  {...register("status")}
+                  disabled={!edit || isWorking}
+                >
+                  <option value="in progress">IN PROGRESS</option>
+                  <option value="done">DONE</option>
+                </Form.Select>
+              </Form.Group>
+              <Form.Group as={Col} xs={6} controlId="storyPoints">
+                <div className="m-1">
+                  <Form.Label>Story Points</Form.Label>
+                  <Button
+                    as="input"
+                    type="button"
+                    variant="secondary"
+                    value={storyPoints}
+                    name="storyPoints"
+                    readOnly={true}
+                  />
+                </div>
+              </Form.Group>
+            </Row>
+            <br />
+            <Button
+              as="input"
               type="button"
-              value="Add user story"
-              onClick={() => mutate()}
+              value={!edit ? "Edit" : "Save"}
+              onClick={handleSubmit(onSubmit)}
+              disabled={isWorking}
             />
-          </div>
-        </tbody>
-      </table>
-      <br/>
-      {storyPoints > 0 ? (
-        <BurnDownChart />
-      ) : (
-        "Add user stories to generate burndown chart"
-      )}
+            &nbsp;
+            {edit && (
+              <Button
+                as="input"
+                type="button"
+                variant="secondary"
+                value="Cancel"
+                onClick={() => setEdit((state) => !state)}
+                disabled={isWorking}
+              />
+            )}
+            {!edit && (
+              <Button
+                as="input"
+                type="button"
+                variant="secondary"
+                value="Delete"
+                onClick={handleSubmit(handleDelete)}
+              />
+            )}
+          </Form>
+        </Col>
+        <Col>
+          <RadialChart />
+        </Col>
+      </Row>
+      <br />
+      <div className="grid-table">
+        <div>
+          <b>User Stories</b>
+        </div>
+        <div>
+          <b>Effort Estimate</b>
+        </div>
+        <div>
+          <b>Start Date</b>
+        </div>
+        <div>
+          <b>End Date</b>
+        </div>
+        <div>
+          <b>Status</b>
+        </div>
+        <div>
+          <b>Assigned</b>
+        </div>
+        <div></div>
+        {userStories?.map((userStory, idx) => (
+          <UserStory key={idx} userStory={userStory} id={id} />
+        ))}
+      </div>
+      <div>
+        <Button as="input" type="button" value="Add user story" onClick={() => mutate()} />
+      </div>
+      <br />
+      <Row>
+        <Col xs={6}>
+          {storyPoints > 0 ? (
+            <BurnDownChart />
+          ) : (
+            "Add user stories to generate burndown chart"
+          )}
+        </Col>
+      </Row>
     </>
   );
 }

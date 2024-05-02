@@ -7,6 +7,7 @@ import Earnings from "./pages/Earnings";
 import Profile from "./pages/Profile";
 import Login from "./pages/Login";
 import PageNotFound from "./pages/PageNotFound";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const queryClient = new QueryClient({
   defaultOptions: {

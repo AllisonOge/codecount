@@ -1,15 +1,17 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import {parseISO, formatISO} from 'date-fns';
+import { parseISO, formatISO } from "date-fns";
 import { useDeleteUserStory } from "./useDeleteUserStory";
 import { useCreateUpdateUserStory } from "./useCreateUpdateUserStory";
 import toast from "react-hot-toast";
+import { Row, Button, Form } from "react-bootstrap";
+import { Basket, PencilSquare, PlusCircle, Save, XCircle } from "react-bootstrap-icons";
 
 // TODO: refactor to utils folder
 function formatDate(isoFormat) {
-    if (isoFormat == "") return;
-    const parsedDate = parseISO(isoFormat)
-    return formatISO(parsedDate, {representation: 'date'})
+  if (isoFormat == "") return;
+  const parsedDate = parseISO(isoFormat);
+  return formatISO(parsedDate, { representation: "date" });
 }
 
 export default function UserStory({ userStory, id }) {
@@ -73,89 +75,111 @@ export default function UserStory({ userStory, id }) {
     deleteUserStory(id);
   }
 
-  const isWorking = isDeleting || isCreatingUpdating
+  const isWorking = isDeleting || isCreatingUpdating;
 
   return (
     <>
-      <tr>
-        <td>
-          <input
-            type="text"
-            name="title"
-            id="title"
-            {...register("title")}
-            disabled={!edit}
-          />
-        </td>
-        <td>
-          <input
-            type="text"
-            name="effortEstimate"
-            id="effortEstimate"
-            {...register("effortEstimate")}
-            disabled={!edit}
-          />
-        </td>
-        <td>
-          <input
-            type="date"
-            name="startDate"
-            id="startDate"
-            {...register("startDate")}
-            disabled={!edit}
-          />
-        </td>
-        <td>
-          <input
-            type="date"
-            name="endDate"
-            id="endDate"
-            {...register("endDate")}
-            disabled={!edit}
-          />
-        </td>
-        <td>
-          <select
-            name="status"
-            id="status"
-            {...register("status")}
-            disabled={!edit}
-          >
-            <option value="to-do">TO-DO</option>
-            <option value="in-progress">IN-PROGRESS</option>
-            <option value="done">DONE</option>
-          </select>
-        </td>
-        <td>
-          <input
-            type="text"
-            name="assigned"
-            id="assigned"
-            {...register("assigned")}
-            disabled={!edit}
-          />
-        </td>
-      </tr>
-      <input
-        type="button"
-        value={!userStory.id ? "Create" : !edit ? "Edit" : "Save"}
-        onClick={handleSubmit(onClick)}
-        disabled={isWorking}
-      />
-      {edit && (
-        <input
-          type="button"
-          value="Cancel"
-          onClick={() => {
-            reset();
-            setEdit(false);
-          }}
-          disabled={isWorking}
+      <Row>
+        <Button
+          as="input"
+          type="text"
+          name="title"
+          {...register("title")}
+          disabled={!edit}
         />
-      )}
-      {userStory.id && !edit && (
-        <input type="button" value="Delete" onClick={handleSubmit(onDelete)} disabled={isWorking} />
-      )}
+      </Row>
+      <Row>
+        <Button
+          as="input"
+          type="text"
+          name="effortEstimate"
+          {...register("effortEstimate")}
+          disabled={!edit}
+        />
+      </Row>
+      <Row>
+        <Button
+          as="input"
+          type="date"
+          name="startDate"
+          {...register("startDate")}
+          disabled={!edit}
+        />
+      </Row>
+      <Row>
+        <Button
+          as="input"
+          type="date"
+          name="endDate"
+          {...register("endDate")}
+          disabled={!edit}
+        />
+      </Row>
+      <Row>
+        <Form.Select name="status" {...register("status")} disabled={!edit}>
+          <option value="to-do">TO-DO</option>
+          <option value="in-progress">IN-PROGRESS</option>
+          <option value="done">DONE</option>
+        </Form.Select>
+      </Row>
+      <Row>
+        <Button
+          as="input"
+          type="text"
+          name="assigned"
+          {...register("assigned")}
+          disabled={!edit}
+        />
+      </Row>
+      <Row>
+        {!userStory.id ? (
+          <PlusCircle
+            as={Button}
+            size={20}
+            variant="tertiary"
+            onClick={handleSubmit(onClick)}
+            disabled={isWorking}
+          />
+        ) : !edit ? (
+          <PencilSquare
+            as={Button}
+            size={20}
+            variant="tertiary"
+            onClick={handleSubmit(onClick)}
+            disabled={isWorking}
+          />
+        ) : (
+          <Save
+            as={Button}
+            size={20}
+            variant="tertiary"
+            onClick={handleSubmit(onClick)}
+            disabled={isWorking}
+          />
+        )}
+
+        {edit && (
+          <XCircle
+            as={Button}
+            size={20}
+            variant="tertiary"
+            onClick={() => {
+              reset();
+              setEdit(false);
+            }}
+            disabled={isWorking}
+          />
+        )}
+        {userStory.id && !edit && (
+          <Basket
+            as={Button}
+            size={20}
+            variant="tertiary"
+            onClick={handleSubmit(onDelete)}
+            disabled={isWorking}
+          />
+        )}
+      </Row>
     </>
   );
 }
