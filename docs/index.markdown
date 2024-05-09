@@ -11,13 +11,13 @@ layout: default
             <h2 class="h2 text-white">{{ page.description | default: site.description | default: site.github.project_tagline }}</h2>
         </header>
         <div>
-            <input class="btn btn-danger btn-lg" type="button" value="Get Started for Free">
+            <a href="https://youtu.be/e5NlmNhwrJk?si=1fDZP7B35ORBeoX-" target="_blank" class="btn btn-danger">Get Started for Free</a>
         </div>
     </div>
 </section>
 <br/>
 <section class="container">
-    <section class="text-center">
+    <section id="#feature-highlights" class="text-center">
     <h3>Features Highlight</h3>
     <br/>
     <div class="row">
@@ -49,71 +49,28 @@ layout: default
     </div>
     </section>
     <br/>
-    <section>
-    <!-- gif -->
-    How it works (step-by-step guide)
+    <section id="#about">
+    <h3 class="text-center">What's our story</h3>
+    <br/>
+    <p class="text-center">CodeCount is a solution to yearning demand all through the years as a self-taught software developer. I have often taken up freelance projects and one tool I hoped to use in my day to day project applying the agile and scrum development was the burndown chart. I first saw one in the American TV series "Silicon Valley" in the second or third season (can't really remember because it has been so long) in the year 2019 just when I started competitive programming. It was a rundown of the expected man-hours and efficiency to the actual man-hours and efficiency. It might be appalling but as a developer that admires visuals, I like to have a visual picture of how a project is going or has gone. So as a partial requirement of the ALX SWE programme, I decided to take up the challenge and build a custom burndown chart application with added features to manage finances as well which would essentially make the product stand out of the competition.</p>
+    <h4>Team</h4>
+    <br/>
+    <article>
+        <p>Ogechukwu, <strong>KANU</strong></p>
+        <ul>
+        <li><strong>LINKEDIN</strong>&ndash;<a href="https://www.linkedin.com/in/allison-ogechukwu-2383bb1a4/"  target="_blank">https://www.linkedin.com/in/allison-ogechukwu-2383bb1a4/</a></li>
+        <li><strong>GITHUB</strong>&ndash;<a href="https://github.com/allisonOge"  target="_blank">https://github.com/allisonOge</a></li>
+        <li><strong>TWITTER</strong>&ndash;<a href="https://twitter.com/iamallisonkanu"  target="_blank">https://twitter.com/iamallisonkanu</a></li>
+        </ul>
+    </article>
+    <p>Visit or contribute to project&ndash;<a href="https://github.com/AllisonOge/codecount" target="_blank" class="btn btn-warning text-white"><span>project github</span></a></p>
     </section>
     <br/>
     <section class="text-center">
-    <h3>Testimonials</h3>
-    <br/>
-    <div id="carouselTestimonials" class="carousel slide">
-    <div class="carousel-inner d-flex align-items-stretch">
-        <div class="carousel-item active">
-        <div class="card bg-dark">
-        <div class="card-body">
-        <figure>
-            <blockquote class="blockquote">
-                <p>CodeCount has revolutionized how I manage my projects. The burndown charts and integrated financial tracking give me a clear overview of my progress and earnings. It’s exactly what I needed to stay organized and focused!</p>
-            </blockquote>
-            <figcaption class="blockquote-footer">
-                Allison, ALX Student, Nigeria
-            </figcaption>
-            </figure>
-        </div>
-        </div>
-        </div>
-        <div class="carousel-item">
-        <div class="card bg-dark">
-        <div class="card-body">
-        <figure>
-            <blockquote class="blockquote">
-                <p>Since I started using CodeCount, I’ve seen a significant improvement in managing my project deadlines and budgets. It’s intuitive, easy to use, and incredibly effective. Highly recommend for any freelancer who wants to take control of their workflow!</p>
-            </blockquote>
-            <figcaption class="blockquote-footer">
-                Jane, Independent Software Engineer, Nigeria
-            </figcaption>
-            </figure>
-        </div>
-        </div>
-        </div>
-        <div class="carousel-item">
-        <div class="card bg-dark">
-        <div class="card-body">
-        <figure>
-            <blockquote class="blockquote">
-                <p>I used to struggle with project scope creep and tracking my earnings accurately. CodeCount helps me keep everything under control with its powerful project management tools and easy-to-understand financial insights.</p>
-            </blockquote>
-            <figcaption class="blockquote-footer">
-                Mary, ALX Alumni, Ghana
-            </figcaption>
-            </figure>
-        </div>
-        </div>
-        </div>
-    </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#carouselTestimonials" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#carouselTestimonials" data-bs-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
-    </button>
-    </div>
+    <iframe width="100%" height="510" src="https://www.youtube.com/embed/W15XXcQgiwg" title="CodeCount Project Presentation" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
     </section>
     <br/>
     <section class="text-center">
-    <p>Start Managing Your Freelance Projects Today&ndash;<input class="btn btn-danger" type="button" value="Sign Up for Free!"></p>
+    <p>Start Managing Your Freelance Projects Today&ndash;<a href="https://youtu.be/e5NlmNhwrJk?si=1fDZP7B35ORBeoX-" target="_blank" class="btn btn-danger">Sign Up for Free!</a></p>
     </section>
 </section>
