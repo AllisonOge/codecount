@@ -3,6 +3,8 @@
 
 @import "{{ site.theme }}";
 
+$hero-image-url: "{{ '/assets/images/hero-image.webp' | prepend: site.github.url }}";
+
 blockquote {
  border-left: none;
  padding: 0;
@@ -12,7 +14,7 @@ blockquote {
 .hero {
     height: 80vh;
     width: 100%;
-    background-image: url("/assets/images/hero-image.webp");
+    background-image: url(#{$hero-image-url});
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
