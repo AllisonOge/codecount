@@ -88,6 +88,8 @@ export default function BurnDownChart() {
         }));
       if (Object.keys(weights).length === 0 && weights.constructor === Object)
         return;
+
+      if (usMap.length === 0) return;
       const total = usMap.reduce((p, c) => p + weights[c.effortEstimate], 0);
 
       /* I need the following data =>
@@ -103,9 +105,10 @@ export default function BurnDownChart() {
         (acc, cur) => (acc === null || cur.endDate > acc ? cur.endDate : acc),
         null
       );
-      // console.log(
-      //   `Project ranges from ${projectStartDateISO} to ${projectEndDateISO}`
-      // );
+      if (!projectStartDateISO || !projectEndDateISO) return;
+      console.log(
+        `Project ranges from ${projectStartDateISO} to ${projectEndDateISO}`
+      );
       const projectStartDate = startOfDay(projectStartDateISO);
       const projectEndDate = endOfDay(projectEndDateISO);
       const numberOfDays =

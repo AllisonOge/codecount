@@ -20,8 +20,8 @@ export default function UserStory({ userStory, id }) {
     defaultValues: {
       title: userStory.title,
       effortEstimate: userStory.effortEstimate,
-      startDate: formatDate(userStory.startDate),
-      endDate: formatDate(userStory.endDate),
+      startDate: formatDate(userStory.startDate ?  userStory.startDate : ""),
+      endDate: formatDate(userStory.endDate ? userStory.endDate : ""),
       status: userStory.status,
       assigned: userStory.assigned,
     },

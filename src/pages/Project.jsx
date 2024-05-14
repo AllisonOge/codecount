@@ -268,7 +268,7 @@ export default function Project() {
           {storyPoints > 0 ? (
             <BurnDownChart />
           ) : (
-            "Add user stories to generate burndown chart"
+            "Add user stories or missing fields to generate burndown chart"
           )}
         </Col>
       </Row>
