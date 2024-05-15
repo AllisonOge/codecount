@@ -49,6 +49,7 @@ export default function Project() {
   const { userStories, isLoadingUserStories } = useUserStories(id);
 
   const [edit, setEdit] = useState(false);
+  const [newUserStory, setNewUserStory] = useState(false);
   const [storyPoints, setStoryPoints] = useState(0);
 
   // TODO: read weights from settings table in database
@@ -61,8 +62,32 @@ export default function Project() {
     }),
   });
 
+  const { updateProject, isUpdating } = useUpdateProject(id);
+
+  const { deleteProject, isDeleting } = useDeleteProject(id);
+
+  const { mutate, isLoading: isAdding } = useMutation({
+    // only add one empty user story
+    mutationFn: () => ((userStories.length === 0 || userStories.filter((us) => us.id).length === userStories.length) ?
+      userStories.push({
+        title: "",
+        effortEstimate: "",
+        startDate: "",
+        endDate: "",
+        status: "",
+        assigned: "",
+      }) : userStories),
+  });
+
   useEffect(() => {
+    if (!isAdding && !isLoadingUserStories && userStories.length === 0) {
+      setNewUserStory(true);
+      mutate();
+      return;
+    }
+
     if (!(isLoadingUserStories || isLoadingWeights)) {
+      setNewUserStory(false);
       const usMap = userStories
         .filter((us) => us.id && us.effortEstimate)
         .map((us) => ({
@@ -78,35 +103,17 @@ export default function Project() {
     userStories,
     weights,
     setStoryPoints,
+    mutate,
     isLoadingUserStories,
     isLoadingWeights,
+    isAdding,
   ]);
 
-  const { updateProject, isUpdating } = useUpdateProject(id);
-
-  const { deleteProject, isDeleting } = useDeleteProject(id);
-
-  const { mutate, isLoading: isAdding } = useMutation({
-    mutationFn: handleClick,
-  });
 
   const navigate = useNavigate();
 
   const isLoading = isLoadingProject || isLoadingUserStories;
   const isWorking = isUpdating || isAdding || isDeleting;
-
-  // if data is empty prepopulate the table with empty rows
-  if (userStories?.length === 0)
-    for (let i = 0; i < 4; i++) {
-      userStories.push({
-        title: "",
-        effortEstimate: "",
-        startDate: "",
-        endDate: "",
-        status: "",
-        assigned: "",
-      });
-    }
 
   if (isLoading) return <p>Fetching data...</p>;
 
@@ -121,17 +128,6 @@ export default function Project() {
         onSuccess: () => setEdit(false),
       }
     );
-  }
-
-  function handleClick() {
-    userStories.push({
-      title: "",
-      effortEstimate: "",
-      startDate: "",
-      endDate: "",
-      status: "",
-      assigned: "",
-    });
   }
 
   function handleDelete() {
@@ -268,9 +264,10 @@ export default function Project() {
           <UserStory key={idx} userStory={userStory} id={id} />
         ))}
       </div>
-      <div>
-        <Button as="input" type="button" value="Add user story" onClick={() => mutate()} />
-      </div>
+      {!newUserStory &&
+        <div>
+          <Button as="input" type="button" value="Add user story" onClick={() => mutate()} />
+        </div>}
       <br />
       <Row>
         <Col xs={6}>

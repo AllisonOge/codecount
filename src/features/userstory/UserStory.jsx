@@ -20,7 +20,7 @@ import { formatDate } from "../../utils/dateUtils";
  * @returns {JSX.Element} - UserStory component
  */
 export default function UserStory({ userStory, id }) {
-  const [edit, setEdit] = useState(false);
+  const [edit, setEdit] = useState(userStory.id ? false : true);
   const { register, handleSubmit, reset, getValues } = useForm({
     defaultValues: {
       title: userStory.title,
@@ -37,6 +37,11 @@ export default function UserStory({ userStory, id }) {
     useCreateUpdateUserStory(id);
 
   function onClick(d) {
+    // replace empty string with null
+    for (const key in d) {
+      if (d[key] === "") d[key] = null;
+    }
+
     if (!edit) {
       setEdit((state) => !state);
       return;
