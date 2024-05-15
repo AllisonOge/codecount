@@ -1,3 +1,7 @@
+/**
+ * @module pages/Dashboard
+ * @description This module contains the Dashboard component
+ */
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -6,6 +10,10 @@ import CreateProject from "../features/project/CreateProject";
 import { getCurrentUser } from "../services/apiAuth";
 import { Card, Row, Button, Badge } from "react-bootstrap";
 
+/**
+ * Dashboard is a React functional component for the dashboard page
+ * @returns {JSX.Element} - Dashboard component
+ */
 export default function Dashboard() {
   const [toggle, setToggle] = useState(false);
   const queryClient = useQueryClient();

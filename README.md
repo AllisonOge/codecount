@@ -1,30 +1,19 @@
 # CodeCount
-| Tagline  |  Count Every Project, Every penny, Every possibility |
-| --- | ---|
-| author | [@allisonoge](https://github.com/allisonoge) |
-| version | 0.0.0 |
-| comment | in partial fulfilment of the requirements for the SWE program at ALX |
 
-**Executive Summary**: a web-based tool under the belt of freelance developers for tracking projects and managing finances meticulously. It can help a developer estimate when the work will be completed and the cost by showing the amount of work remaining over time. CodeCount is especially useful for short-term projects like the ones ALX students engage in regularly as it is an excellent way to represent your progress against time visually.
+<p align="center">
+  <a href="https://allisonoge.github.io/codecount/" target="_blank"><img src="src/assets/codecount-logo.webp" height="150"/></img></a>
+<br />CodeCount is a web-based tacker tool for managing short-term projects for freelancers.
+</p>
 
-## MVP Solution
+## Introduction
 
-There are 4 major features fully defined in the following trello board => [https://trello.com/b/whcmiUTd/codecount-project](https://trello.com/b/whcmiUTd/codecount-project)
+| Tagline  |  Author | Version | Landing Page | Manifesto |
+| --- | ---| --- | --- | --- |
+| Count Every Project, Every penny, Every possibility | [@allisonoge](https://github.com/allisonoge) | 0.0.0 | [https://allisonoge.github.io/codecount/](https://allisonoge.github.io/codecount/) | *In partial fulfilment of the requirements for the SWE program at ALX* |
 
-## Screenshots (MVP Solution)
+## Project Roadmap
 
-Auth page
-![codecount auth](src/assets/screencapture-localhost-5173-login-2024-05-02-11_49_56.png)
-
-
-Dashboard view (Projects)
-![codecount projects](src/assets/screencapture-localhost-5173-dashboard-2024-05-02-11_23_03.png)
-
-Dashboard view (with charts - new project)
-![codecount dashboard](src/assets/screencapture-localhost-5173-dashboard-project-20-2024-05-02-11_45_00.png)
-
-Dashboard view (with charts)
-![codecount dashboard](src/assets/screencapture-localhost-5173-dashboard-project-14-2024-05-02-11_22_13.png)
+There are 3 major features fully defined in the following trello board => [https://trello.com/b/whcmiUTd/codecount-project](https://trello.com/b/whcmiUTd/codecount-project)
 
 ## Getting started
 
@@ -35,3 +24,12 @@ cd codecount
 npm install
 npm run dev
 ```
+
+## Contributing
+
+
+## Related Projects
+
+
+## Licensing
+

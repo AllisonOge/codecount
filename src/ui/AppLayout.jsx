@@ -1,8 +1,16 @@
+/**
+ * @module ui/AppLayout
+ * @description The layout component for the application.
+ */
 import { Outlet } from "react-router-dom";
 import { Link } from "react-router-dom/dist";
 import Logout from "../features/auth/Logout";
 import { Nav, NavDropdown, Navbar, Container } from "react-bootstrap";
 
+/**
+ * AppLayout is the layout component for the application.
+ * @returns {JSX.Element} - The layout of the application.
+ */
 export default function AppLayout() {
   return (
     <>

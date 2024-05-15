@@ -1,8 +1,19 @@
+/**
+ * @module CreateProject
+ * @description This module contains the CreateProject component
+ */
+
 import { useForm } from "react-hook-form";
 import { useCreateProject } from "./useCreateProject";
 import { Modal, Form } from "react-bootstrap";
 import Error from "../../ui/Error";
 
+/**
+ * CreateProject component to create a new project
+ * @param {Object} params - The parameters.
+ * @param {Function} params.cancelProject - The function to cancel the project creation.
+ * @returns {Modal.Dialog} - Modal dialog to create a new project
+ */
 export default function CreateProject({ cancelProject }) {
   const {
     register,

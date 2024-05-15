@@ -1,19 +1,24 @@
+/**
+ * @module UserStory
+ * @description This module contains the UserStory component
+ */
+
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { parseISO, formatISO } from "date-fns";
-import { useDeleteUserStory } from "./useDeleteUserStory";
-import { useCreateUpdateUserStory } from "./useCreateUpdateUserStory";
 import toast from "react-hot-toast";
 import { Row, Button, Form } from "react-bootstrap";
 import { Basket, PencilSquare, PlusCircle, Save, XCircle } from "react-bootstrap-icons";
+import { useDeleteUserStory } from "./useDeleteUserStory";
+import { useCreateUpdateUserStory } from "./useCreateUpdateUserStory";
+import { formatDate } from "../../utils/dateUtils";
 
-// TODO: refactor to utils folder
-function formatDate(isoFormat) {
-  if (isoFormat == "") return;
-  const parsedDate = parseISO(isoFormat);
-  return formatISO(parsedDate, { representation: "date" });
-}
-
+/**
+ * UserStory component to manage user stories
+ * @param {Object} params - The parameters.
+ * @param {Object} params.userStory - The user story object.
+ * @param {Number} params.id - The id of the project.
+ * @returns {JSX.Element} - UserStory component
+ */
 export default function UserStory({ userStory, id }) {
   const [edit, setEdit] = useState(false);
   const { register, handleSubmit, reset, getValues } = useForm({

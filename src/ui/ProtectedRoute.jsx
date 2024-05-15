@@ -1,7 +1,17 @@
+/**
+ * @module ui/ProtectedRoute
+ * @description A component that renders children if the user is authenticated.
+ */
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../features/auth/useUser";
 
+/**
+ * ProtectedRoute is a component that renders children if the user is authenticated.
+ * @param {Object} params - The parameters.
+ * @param {JSX.Element} params.children - The children of the component.
+* @returns {JSX.Element} - The protected route component.
+ */
 export default function ProtectedRoute({ children }) {
   // 1. load the authenticated user
   const { isLoading, isAuthenticated } = useUser();

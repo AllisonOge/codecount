@@ -1,3 +1,8 @@
+/**
+ * @module Project
+ * @description This module contains the Project component
+ */
+
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -12,6 +17,10 @@ import { useDeleteProject } from "../features/project/useDeleteProject";
 import { useUserStories } from "../features/userstory/useUserStories";
 import { Form, Row, Col, Button } from "react-bootstrap";
 
+/**
+ * Project component to display and manage project details
+ * @returns {JSX.Element} - Project component
+ */
 export default function Project() {
   const { id } = useParams();
 

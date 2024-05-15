@@ -1,3 +1,8 @@
+/**
+ * @module BurnDownChart
+ * @description This module contains the BurnDownChart component
+ */
+
 import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
@@ -8,8 +13,6 @@ import {
   formatDate,
   startOfDay,
 } from "date-fns";
-import { useUserStories } from "../userstory/useUserStories";
-import { getWorkdonePerDay } from "../../services/apiBurnDown";
 import {
   Area,
   AreaChart,
@@ -18,40 +21,21 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import { useUserStories } from "../userstory/useUserStories";
+import { getWorkdonePerDay } from "../../services/apiBurnDown";
+import { distributeEvenly, cumulativeSum } from "../../utils/helpers";
 
-function cumulativeSum(storyPointsPerDay) {
-  let storyPointsAcc = [];
-  let sum = 0;
-  for (let i = 0; i < storyPointsPerDay.length; i++) {
-    sum += storyPointsPerDay[i].storyPoints;
-    storyPointsAcc.push({ ...storyPointsPerDay[i], storyPoints: sum });
-  }
-  return storyPointsAcc;
-}
-
-function distributeEvenly(storyPoints, numberOfDays) {
-  // Calculate the points to be distributed per day
-  const pointsPerDay = Math.floor(storyPoints / numberOfDays);
-  // Calculate the remaining points after evenly distributing
-  const remainingPoints = storyPoints % numberOfDays;
-
-  // Initialize an array to hold the points for each day
-  const distributedPoints = new Array(numberOfDays).fill(pointsPerDay);
-
-  // Distribute remaining points evenly across the days
-  for (let i = 0; i < remainingPoints; i++) {
-    distributedPoints[i] += 1;
-  }
-
-  return distributedPoints;
-}
-
-/*********************************************************
+/**
  * BurndownChart component reads the burndown_chart table
  * which is a catalog of workdone (completed tasks) in a day
  * (or other units of tracking eg hours)
- **********************************************************/
-
+ * and user stories to calculate the expected and actual
+ * story points per day (or other units of tracking eg hours)
+ * 
+ * TODO: implement other units of tracking eg hours
+ * 
+ * @returns {AreaChart} - AreaChart component
+ */
 export default function BurnDownChart() {
   const { id } = useParams();
   const [storyPointsPerDay, setStoryPointsPerDay] = useState([]);
@@ -106,9 +90,9 @@ export default function BurnDownChart() {
         null
       );
       if (!projectStartDateISO || !projectEndDateISO) return;
-      console.log(
-        `Project ranges from ${projectStartDateISO} to ${projectEndDateISO}`
-      );
+      // console.log(
+      //   `Project ranges from ${projectStartDateISO} to ${projectEndDateISO}`
+      // );
       const projectStartDate = startOfDay(projectStartDateISO);
       const projectEndDate = endOfDay(projectEndDateISO);
       const numberOfDays =

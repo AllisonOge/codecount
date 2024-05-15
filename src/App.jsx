@@ -1,5 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-// import GlobalStyles from "./styles/GlobalStyles";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { Toaster } from "react-hot-toast";
 import ProtectedRoute from "./ui/ProtectedRoute";
 import Dashboard from "./pages/Dashboard";
 import Project from "./pages/Project";
@@ -7,7 +9,11 @@ import Earnings from "./pages/Earnings";
 import Profile from "./pages/Profile";
 import Login from "./pages/Login";
 import PageNotFound from "./pages/PageNotFound";
+import AppLayout from "./ui/AppLayout";
+
+// import GlobalStyles from "./styles/GlobalStyles";
 import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -16,11 +22,6 @@ const queryClient = new QueryClient({
     },
   },
 });
-
-import AppLayout from "./ui/AppLayout";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { Toaster } from "react-hot-toast";
 
 function App() {
   return (

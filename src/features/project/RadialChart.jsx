@@ -1,9 +1,19 @@
+/**
+ * @module RadialChart
+ * @description This module contains the RadialChart component
+ */
+
 import { useState, useEffect } from "react";
 import { useUserStories } from "../userstory/useUserStories";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
-import { PolarAngleAxis, RadialBar, RadialBarChart } from "recharts";
+import { RadialBar, RadialBarChart } from "recharts";
 
+/**
+ * RadialChart component reads the user stories and weights (effort estimate)
+ * to calculate the percentage of completed user stories
+ * @returns {RadialBarChart} - RadialBarChart component
+ */
 export default function RadialChart() {
   const { id } = useParams();
   const [storyPoints, setStoryPoints] = useState(0);

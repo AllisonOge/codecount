@@ -1,3 +1,7 @@
+/**
+ * @module pages/Login
+ * @description This module contains the Login component
+ */
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useLogin } from "../features/auth/useLogin";
@@ -5,6 +9,10 @@ import { useSignup } from "../features/auth/useSignup";
 import { Form, Row, Button } from "react-bootstrap";
 import Error from "../ui/Error";
 
+/**
+ * Login is a React functional component for the login page
+ * @returns {JSX.Element} - Login component
+ */
 export default function Login() {
   const [toggle, setToggle] = useState(false);
   const {

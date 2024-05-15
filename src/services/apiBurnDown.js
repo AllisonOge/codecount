@@ -1,6 +1,17 @@
+/**
+ * @module apiBurnDown
+ * @description This module contains the functions for cataloging completed user stories and getting work done per day
+ */
 import { isEqual, startOfDay } from "date-fns";
 import supabase from "./supabase";
 
+/**
+ * catalogCompleteUserStory catalogs a completed user story for a given project.
+ * @param {Object} params - The parameters.
+ * @param {number} params.projectId - The ID of the project.
+ * @param {number} params.userStoryId - The ID of the user story.
+ * @throws Will throw an error if the supabase query fails.
+ */
 export async function catalogCompletedUserStory({ projectId, userStoryId }) {
     const completedAt = new Date()
     // 1. check if record exist and within 24 hours 
@@ -39,7 +50,12 @@ export async function catalogCompletedUserStory({ projectId, userStoryId }) {
     }
 }
 
-
+/**
+ * getWorkdonePerDay retrieves the work done per day for a given project.
+ * @param {number} id - The ID of the project.
+ * @returns {Array<Object>} An array of objects representing the work done per day.
+ * @throws Will throw an error if the supabase query fails.
+ */
 export async function getWorkdonePerDay(id) {
 
     let { data: workdone, error } = await supabase
