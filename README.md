@@ -31,9 +31,9 @@ We welcome contributions from the community! Here are some ways you can get invo
 
 1. **Report Bugs**: If you find a bug, please open an issue on GitHub with a detailed description of the problem.
 2. **Suggest Features**: Have an idea for a new feature? Let us know by opening an issue or starting a discussion on GitHub.
-3. **Submit Pull Requests**: If you want to contribute code, fork the repository, make your changes, and submit a pull request. Be sure to follow our [contribution guidelines](https://github.com/allisonoge/codecount/blob/main/CONTRIBUTING.md).
+3. **Submit Pull Requests**: If you want to contribute code, fork the repository, make your changes, and submit a pull request. Be sure to follow our [contribution guidelines](https://github.com/AllisonOge/codecount/blob/master/CONTRIBUTING.md).
 
-Before contributing, please make sure to read our [Code of Conduct](https://github.com/allisonoge/codecount/blob/main/CODE_OF_CONDUCT.md).
+Before contributing, please make sure to read our [Code of Conduct](https://github.com/allisonoge/codecount/blob/master/CODE_OF_CONDUCT.md).
 
 ## Related Projects
 
@@ -43,4 +43,4 @@ There are no related projects at this time.
 
 CodeCount is licensed under the MIT License. This means you are free to use, modify, and distribute this software, as long as you include the original copyright and license notice in any copies or substantial portions of the software.
 
-For more details, please refer to the [LICENSE](https://github.com/allisonoge/codecount/blob/main/LICENSE) file in the repository.
+For more details, please refer to the [LICENSE](https://github.com/allisonoge/codecount/blob/master/LICENSE) file in the repository.
