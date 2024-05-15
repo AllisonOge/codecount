@@ -11,6 +11,8 @@
 | --- | ---| --- | --- | --- |
 | Count Every Project, Every penny, Every possibility | [@allisonoge](https://github.com/allisonoge) | 0.0.0 | [https://allisonoge.github.io/codecount/](https://allisonoge.github.io/codecount/) | *In partial fulfilment of the requirements for the SWE program at ALX* |
 
+>Learn even more about the project through [retrospective report](https://allisonoge.github.io/softwaredevelopment/2024/05/15/building-codecount.html)
+
 ## Project Roadmap
 
 There are 3 major features fully defined in the following trello board => [https://trello.com/b/whcmiUTd/codecount-project](https://trello.com/b/whcmiUTd/codecount-project)
